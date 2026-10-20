@@ -12,6 +12,8 @@ public class Minesweeper : MonoBehaviour
     private Tile[,] grid;
     private MinesweeperTile[,] gameGrid;
 
+    private bool gameOver;
+
     private int[] dr = { 0, -1, 0, 1, -1, -1, 1, 1 };
     private int[] dc = { -1, 0, 1, 0, -1, 1, -1, 1 };
 
@@ -32,6 +34,7 @@ public class Minesweeper : MonoBehaviour
     private void Start()
     {
         NewGame();
+        RevealAll();
     }
 
     private void Update()
@@ -48,9 +51,10 @@ public class Minesweeper : MonoBehaviour
             for (int c = 0; c < gridHeight; c++)
             {
                 grid[r, c] = new Tile();
-                GameObject mt = Instantiate(tilePrefab, new Vector2(50 * r, 50 * c), Quaternion.identity);
+                GameObject mt = Instantiate(tilePrefab, new Vector2(50 * r + (835/2.0f), 50 * c + (312/2.0f)), Quaternion.identity);
                 mt.transform.SetParent(canvas.transform);
                 gameGrid[r, c] = mt.GetComponent<MinesweeperTile>();
+                gameGrid[r, c].Setup(this, r, c);
             }
         }
 
@@ -78,17 +82,19 @@ public class Minesweeper : MonoBehaviour
                     continue;
                 }
 
+                int mineCount = 0;
                 for (int i = 0; i < 8; i++)
                 {
                     int nr = r + dr[i];
                     int nc = c + dc[i];
-                    if (!IsInBounds(nr, nc) || grid[r, c].isMine)
+                    if (!IsInBounds(nr, nc) || !grid[nr, nc].isMine)
                     {
                         continue;
                     }
 
-                    grid[r, c].numAdjMines++;
+                    mineCount++;
                 }
+                grid[r, c].numAdjMines = mineCount;
             }
         }
     }
@@ -100,6 +106,31 @@ public class Minesweeper : MonoBehaviour
 
     public void Reveal(int r, int c)
     {
+        
+    }
 
+    public void RevealAll()
+    {
+        for (int r = 0; r < gridWidth; r++)
+        {
+            for (int c = 0; c < gridHeight; c++)
+            {
+                grid[r, c].isRevealed = true;
+
+                if (grid[r, c].isMine)
+                {
+                    gameGrid[r, c].SetLabel("*");
+                }
+                else if (grid[r, c].numAdjMines == 0)
+                {
+                    gameGrid[r, c].SetLabel("");
+                }
+                else
+                {
+                    char ch = (char)('0' + grid[r, c].numAdjMines);
+                    gameGrid[r, c].SetLabel("" + ch);
+                }
+            }
+        }
     }
 }

@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 3283157956533414569}
   - component: {fileID: 3075790850222007468}
   - component: {fileID: 5416265242704819684}
+  - component: {fileID: 6832904307475870163}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -213,6 +214,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6832904307475870163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824788496311416006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b55bd8f58e23cf48a50ad4921f55809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinesweeperTile
+  button: {fileID: 2880503216952120042}
+  label: {fileID: 8690132580803193911}
 --- !u!1 &8751069355021276400
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +240,6 @@ GameObject:
   - component: {fileID: 8549124964551291884}
   - component: {fileID: 6511463979430312311}
   - component: {fileID: 2880503216952120042}
-  - component: {fileID: 4381743207270004884}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -335,17 +349,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4381743207270004884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8751069355021276400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b55bd8f58e23cf48a50ad4921f55809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MinesweeperTile
-  button: {fileID: 2880503216952120042}
-  label: {fileID: 8690132580803193911}
