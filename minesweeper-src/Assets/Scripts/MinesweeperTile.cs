@@ -24,4 +24,9 @@ public class MinesweeperTile : MonoBehaviour
 
         label.text = "";
     }
+
+    public void SetLabel(string text)
+    {
+        label.text = text;
+    }
 }

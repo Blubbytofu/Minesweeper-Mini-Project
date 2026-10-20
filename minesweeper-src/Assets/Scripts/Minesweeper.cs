@@ -10,6 +10,7 @@ public class Minesweeper : MonoBehaviour
     [SerializeField] private int numMines;
 
     private Tile[,] grid;
+    private MinesweeperTile[,] gameGrid;
 
     private int[] dr = { 0, -1, 0, 1, -1, -1, 1, 1 };
     private int[] dc = { -1, 0, 1, 0, -1, 1, -1, 1 };
@@ -35,17 +36,21 @@ public class Minesweeper : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 
     private void NewGame()
     {
         grid = new Tile[gridWidth, gridHeight];
+        gameGrid = new MinesweeperTile[gridWidth, gridHeight];
         for (int r = 0; r < gridWidth; r++)
         {
             for (int c = 0; c < gridHeight; c++)
             {
                 grid[r, c] = new Tile();
+                GameObject mt = Instantiate(tilePrefab, new Vector2(50 * r, 50 * c), Quaternion.identity);
+                mt.transform.SetParent(canvas.transform);
+                gameGrid[r, c] = mt.GetComponent<MinesweeperTile>();
             }
         }
 
