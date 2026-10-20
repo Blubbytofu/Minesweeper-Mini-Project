@@ -40,11 +40,6 @@ public class Minesweeper : MonoBehaviour
         NewGame();
     }
 
-    private void Update()
-    {
-
-    }
-
     private void NewGame()
     {
         gameOver = false;
