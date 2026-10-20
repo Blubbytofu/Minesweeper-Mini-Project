@@ -6,6 +6,7 @@ public class MinesweeperTile : MonoBehaviour
 {
     [SerializeField] private Button button;
     [SerializeField] private TMP_Text label;
+    [SerializeField] private Image img;
 
     private Minesweeper gameManager;
     private int r;
@@ -23,10 +24,12 @@ public class MinesweeperTile : MonoBehaviour
         );
 
         label.text = "";
+        img.color = Color.gray;
     }
 
     public void SetLabel(string text)
     {
         label.text = text;
+        img.color = Color.white;
     }
 }

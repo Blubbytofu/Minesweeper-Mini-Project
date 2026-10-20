@@ -228,6 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MinesweeperTile
   button: {fileID: 2880503216952120042}
   label: {fileID: 8690132580803193911}
+  img: {fileID: 6511463979430312311}
 --- !u!1 &8751069355021276400
 GameObject:
   m_ObjectHideFlags: 0

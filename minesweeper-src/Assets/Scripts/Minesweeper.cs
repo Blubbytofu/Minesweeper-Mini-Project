@@ -1,3 +1,5 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Minesweeper : MonoBehaviour
@@ -13,6 +15,8 @@ public class Minesweeper : MonoBehaviour
     private MinesweeperTile[,] gameGrid;
 
     private bool gameOver;
+    private bool gameWon;
+    private int revealedSafeTiles;
 
     private int[] dr = { 0, -1, 0, 1, -1, -1, 1, 1 };
     private int[] dc = { -1, 0, 1, 0, -1, 1, -1, 1 };
@@ -34,7 +38,6 @@ public class Minesweeper : MonoBehaviour
     private void Start()
     {
         NewGame();
-        RevealAll();
     }
 
     private void Update()
@@ -44,6 +47,10 @@ public class Minesweeper : MonoBehaviour
 
     private void NewGame()
     {
+        gameOver = false;
+        gameWon = false;
+        revealedSafeTiles = 0;
+
         grid = new Tile[gridWidth, gridHeight];
         gameGrid = new MinesweeperTile[gridWidth, gridHeight];
         for (int r = 0; r < gridWidth; r++)
@@ -106,10 +113,68 @@ public class Minesweeper : MonoBehaviour
 
     public void Reveal(int r, int c)
     {
-        
+        if (!IsInBounds(r, c) || gameOver)
+        {
+            return;
+        }
+
+        Tile t = grid[r, c];
+        if (t.isRevealed)
+        {
+            return;
+        }
+
+        if (t.isMine)
+        {
+            t.isRevealed = true;
+            gameOver = true;
+            RevealAll();
+            return;
+        }
+
+        FloodFill(r, c);
+
+
     }
 
-    public void RevealAll()
+    private void FloodFill(int r, int c)
+    {
+        Queue<int> rq = new Queue<int>();
+        Queue<int> cq = new Queue<int>();
+
+        rq.Enqueue(r);
+        cq.Enqueue(c);
+
+        while (rq.Count > 0)
+        {
+            r = rq.Dequeue();
+            c = cq.Dequeue();
+
+            Tile t = grid[r, c];
+
+            t.isRevealed = true;
+            UpdateTileLabel(r, c);
+            revealedSafeTiles++;
+
+            if (t.numAdjMines == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    int nr = r + dr[i];
+                    int nc = c + dc[i];
+                    if (!IsInBounds(nr, nc) || grid[nr, nc].isRevealed || grid[nr, nc].isMine)
+                    {
+                        continue;
+                    }
+
+                    rq.Enqueue(nr);
+                    cq.Enqueue(nc);
+                }
+            }
+        }
+    }
+
+    private void RevealAll()
     {
         for (int r = 0; r < gridWidth; r++)
         {
@@ -117,20 +182,25 @@ public class Minesweeper : MonoBehaviour
             {
                 grid[r, c].isRevealed = true;
 
-                if (grid[r, c].isMine)
-                {
-                    gameGrid[r, c].SetLabel("*");
-                }
-                else if (grid[r, c].numAdjMines == 0)
-                {
-                    gameGrid[r, c].SetLabel("");
-                }
-                else
-                {
-                    char ch = (char)('0' + grid[r, c].numAdjMines);
-                    gameGrid[r, c].SetLabel("" + ch);
-                }
+                UpdateTileLabel(r, c);
             }
+        }
+    }
+
+    private void UpdateTileLabel(int r, int c)
+    {
+        if (grid[r, c].isMine)
+        {
+            gameGrid[r, c].SetLabel("*");
+        }
+        else if (grid[r, c].numAdjMines == 0)
+        {
+            gameGrid[r, c].SetLabel("");
+        }
+        else
+        {
+            char ch = (char)('0' + grid[r, c].numAdjMines);
+            gameGrid[r, c].SetLabel("" + ch);
         }
     }
 }
